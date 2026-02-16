@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Master</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="app" id="app">
+
+        <!-- ========== SCREEN 1: LOGIN / SIGNUP ========== -->
+        <section id="auth-screen" class="screen">
+            <div class="auth-container">
+                <h1 class="auth-title">SupaAI FrontEnd Quiz</h1>
+
+                <div class="auth-tabs">
+                    <button class="auth-tab active" id="login-tab">Login</button>
+                    <button class="auth-tab" id="signup-tab">Sign Up</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <p id="login-error" class="error-message"></p>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="signup-form" class="auth-form hidden">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                    <p id="signup-error" class="error-message"></p>
+                </form>
+            </div>
+        </section>
+
+        <!-- ========== SCREEN 2: CATEGORY SELECTION ========== -->
+        <section id="category-screen" class="screen hidden">
+            <div class="category-container">
+                <h1 class="category-title">Choose Your Topic</h1>
+                <p class="category-subtitle" id="category-welcome">Welcome! Pick a category to begin.</p>
+
+                <div class="category-grid">
+                    <button class="category-card" data-category="html">
+                        <span class="category-icon">🌐</span>
+                        <span class="category-name">HTML</span>
+                        <span class="category-count">15 Questions</span>
+                    </button>
+
+                    <button class="category-card" data-category="css">
+                        <span class="category-icon">🎨</span>
+                        <span class="category-name">CSS</span>
+                        <span class="category-count">15 Questions</span>
+                    </button>
+
+                    <button class="category-card" data-category="javascript">
+                        <span class="category-icon">⚡</span>
+                        <span class="category-name">JavaScript</span>
+                        <span class="category-count">20 Questions</span>
+                    </button>
+
+                    <button class="category-card" data-category="all">
+                        <span class="category-icon">📚</span>
+                        <span class="category-name">All Topics</span>
+                        <span class="category-count">50 Questions</span>
+                    </button>
+                </div>
+
+                <button class="btn btn-small" id="category-logout-btn">Logout</button>
+            </div>
+        </section>
+
+        <!-- ========== SCREEN 3: QUIZ ========== -->
+        <section id="quiz-screen" class="screen hidden">
+            <header class="quiz-header">
+                <div class="quiz-info">
+                    <span class="user-name" id="user-display">Welcome, User</span>
+                    <button class="btn btn-danger btn-small" id="end-quiz-btn">End Quiz</button>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                    <span class="progress-text" id="progress-text">1/50</span>
+                </div>
+
+                <div class="timer-container">
+                    <div class="timer-circle" id="timer-circle">
+                        <span class="timer-text" id="timer-text">30</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="quiz-content">
+                <p class="question-category" id="question-category">Category: HTML</p>
+                <h2 class="question-text" id="question-text">
+                    Question will appear here
+                </h2>
+                <div class="options-container" id="options-container"></div>
+            </main>
+
+            <footer class="quiz-footer">
+                <button class="btn btn-secondary" id="prev-btn" disabled>Previous</button>
+                <button class="btn btn-primary" id="next-btn">Next</button>
+                <button class="btn btn-success hidden" id="submit-btn">Submit Quiz</button>
+            </footer>
+        </section>
+
+        <!-- ========== SCREEN 4: RESULTS ========== -->
+        <section id="results-screen" class="screen hidden">
+            <header class="results-header">
+                <h1>Quiz Complete!</h1>
+                <div class="score-display">
+                    <span class="score-label">Your Score</span>
+                    <span class="score-value" id="final-score">0</span>
+                    <span class="score-max" id="score-max">/ 1000</span>
+                </div>
+                <p class="results-summary" id="results-summary"></p>
+            </header>
+
+            <main class="results-content">
+                <div class="charts-container">
+                    <div class="chart-wrapper">
+                        <h3>Correct vs Incorrect</h3>
+                        <canvas id="pie-chart"></canvas>
+                    </div>
+                    <div class="chart-wrapper">
+                        <h3>Time per Question</h3>
+                        <canvas id="bar-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="review-container" id="review-container">
+                    <h3>Review Your Answers</h3>
+                </div>
+
+                <div class="leaderboard-container" id="leaderboard">
+                    <h3>Leaderboard</h3>
+                    <ol class="leaderboard-list" id="leaderboard-list"></ol>
+                </div>
+            </main>
+
+            <footer class="results-footer">
+                <button class="btn btn-primary" id="retry-btn">Try Again</button>
+                <button class="btn btn-secondary" id="home-btn">Choose Category</button>
+            </footer>
+        </section>
+
+    </div>
+
+    <!-- Load order matters: questions first, then helpers, then main app -->
+    <script src="./js/questions.js"></script>
+    <script src="./js/timer.js"></script>
+    <script src="./js/auth.js"></script>
+    <script src="./js/charts.js"></script>
+    <script src="./js/app.js"></script>
+</body>
+
+</html>
